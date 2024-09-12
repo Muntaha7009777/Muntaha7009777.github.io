@@ -12,6 +12,7 @@ function setup() {
 }
 
 function draw() {
+  // runs over and over (targetting 60fps)
   //when possible, try to keep draw() clean...
   background(220);
   drawCircles();
