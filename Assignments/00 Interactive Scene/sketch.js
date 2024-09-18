@@ -16,7 +16,7 @@ function draw() {
   setGardenBg();
   setSkyBg();
   setWaterBg();
-  displayFlowerCounter();
+  // displayFlowerCounter();
 
 
   text('Muntaha Chowdhury', width-120, height-10);
@@ -42,8 +42,40 @@ function setGardenBg() {
 }
 
 function setWaterBg() {
+
+  //body
   fill(220);
-  rect(width/20, height/5, 150, 150, 4);
+  rect(20, height/3, 150, 98, 4);
+
+  //slab
+  fill(50);
+  ellipse(95, (height/3)+3, 154, 35);
+  fill(180);
+  ellipse(95, height/3, 154, 30);
+  fill(36, 39, 64);
+  ellipse(95, (height/3)+2, 100, 15);
+
+  // sticks
+  fill(64, 49, 36);
+  rect(50, height/4, 5, 80);
+  rect(130, height/4, 5, 80);
+
+  //head
+  rect(40, (height/4)-20, 110, 30);
+  //         top point       |   bottom point   |  outermost point
+  triangle(40, (height/4)-20, 40, (height/4)+10, 20, (height/4)+10);
+  triangle(150, (height/4)-20, 150, (height/4)+10, 170, (height/4)+10);
+
+  // rope
+  fill(181, 171, 163);
+  rect(70, (height/4)+20, 5, 67);
+
+  // mid
+  fill(64, 49, 36);
+  rect(50, (height/4)+20, 80, 20);
+  rect(130, (height/4)+25, 25, 5);
+  rect(150, (height/4)+25, 5, 25);
+  rect(150, (height/4)+50, 25, 5);
 }
 
 
