@@ -15,6 +15,7 @@ function draw() {
   background(220); //fallback bg
   setGardenBg();
   setSkyBg();
+  setSkylineBg();
   setWaterBg();
   // displayFlowerCounter();
 
@@ -78,7 +79,6 @@ function setWaterBg() {
   rect(150, (height/4)+50, 25, 5);
 }
 
-
 function setSkyBg() {
   noStroke();
 
@@ -96,6 +96,10 @@ function setSkyBg() {
   }
 }
 
+function setSkylineBg() {
+  fill(182, 197, 217);
+  rect(0, height/6, width, height/8);
+}
 
 
 
