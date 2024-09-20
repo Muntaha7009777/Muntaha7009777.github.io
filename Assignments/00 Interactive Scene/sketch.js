@@ -16,7 +16,7 @@ function draw() {
   setGardenBg();
   setSkyBg();
   setSkylineBg();
-  setWaterBg();
+  // setWaterBg();
   // displayFlowerCounter();
 
 
@@ -97,8 +97,19 @@ function setSkyBg() {
 }
 
 function setSkylineBg() {
-  fill(182, 197, 217);
-  rect(0, height/6, width, height/8);
+  randomSeed(30);
+  
+  for (let i = 0; i < width; i+=50) {
+    fill(182, 197, 217);
+    let buidingHeight = random(40, 150);
+    rect(i, height/4, 50, -buidingHeight);
+  }
+
+  for (let i = 0; i < width; i+=50) {
+    let buidingHeight = random(20, 100);
+    fill(i, 255, i - 255);
+    rect(i-5, height/4, 50, -buidingHeight);
+  }
 }
 
 
