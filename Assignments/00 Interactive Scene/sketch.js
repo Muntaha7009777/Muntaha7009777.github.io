@@ -6,6 +6,9 @@
 
 let currentBack = 1;
 let currentSky = 0;
+let flowersCollected = 0;
+let charX = width/2;
+let charY = height/2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -17,9 +20,12 @@ function draw() {
   setSkyBg();
   setSkylineBg();
   // setWaterBg();
-  // displayFlowerCounter();
+  setFlowerCounter();
+  // flowerPopup();
+  displayFlower();
 
-
+  noStroke();
+  textSize(12);
   text('Muntaha Chowdhury', width-120, height-10);
   fill(0); text((mouseX + ', ' + mouseY), mouseX, mouseY);
 }
@@ -82,60 +88,81 @@ function setWaterBg() {
 function setSkyBg() {
   noStroke();
 
-  if (currentSky === 0)  {
+  if (currentSky === 0)  {   //morning
     fill(199, 247, 255);
-    rect(0, 0, width, height/4);
+    rect(0, 0, width, height/3);
     fill(255, 203, 0);
     circle(width/2, 0, 200);
   }
-  else  {
+  else  {                   //night
     fill(82, 104, 130);
-    rect(0, 0, width, height/4);
+    rect(0, 0, width, height/3);
     fill(255);
     circle(width/2, 0, 200);
   }
 }
 
 function setSkylineBg() {
-  randomSeed(30);
+  randomSeed(5);
   
   for (let i = 0; i < width; i+=50) {
-    fill(182, 197, 217);
-    let buidingHeight = random(40, 150);
-    rect(i, height/4, 50, -buidingHeight);
+    fill(40, 57, 74);
+    let buidingHeight = random(40, 130);
+    rect(i, height/3, 50, -buidingHeight);
   }
 
   for (let i = 0; i < width; i+=50) {
     let buidingHeight = random(20, 100);
-    fill(i, 255, i - 255);
-    rect(i-5, height/4, 50, -buidingHeight);
+    fill(56, 81, 105);
+    rect(i-5, height/3, 50, -buidingHeight);
   }
 }
 
 
 
-function displayFlowerCounter() {
-  // display + keeep track --- of the 4 flowers on the top left 
+function setFlowerCounter() {
+
+  displayFlower((width-80), 40);
+  //amount collected
+  fill(0);
+  textSize(20);
+  text(flowersCollected, width-40, 45);
+}
+
+// function flowerPopup() {
+//   let time = Date.now();
+//   if ((time)%100 === 0){
+//     let flowerX = random(0, width);
+//     let flowerY = random(0, height);
+//     // console.log(flowerX, flowerY);
+//     displayFlower(5, 4);
+//   }
+// }
+
+function displayFlower(xPos, yPos) {
+  // display + keeep track --- of the flowers on the top left 
 
   stroke(0);
   fill(150, 147, 255);
 
-  // Petals
-  rect((width/2)-25, (height/2)-25, 50)
-  // triangle(320, 460, 370, 460, 344, 410);
-  // triangle(360, 450, 360, 500, 410, 473);
-  // triangle(370, 479, 330, 500, 375, 525);
-  // triangle(335, 450, 335, 500, 290, 470);  
-  // triangle(330, 463, 350, 500, 310, 525);  
-
+  // Petals (top-left -> goes clockwise)
+  rect(xPos, yPos, -20);      
+  rect(xPos, yPos, 20, -20);
+  rect(xPos, yPos, 20);
+  rect(xPos, yPos, -20, 20);
 
   // center
   fill(236, 247, 27);
-  circle(width/2, height/2, 40);
-
+  circle(xPos, yPos, 10);
 }
 
 function mousePressed() {
+
+  // change currentBack
+  if (mouseButton === CENTER) {
+    if (currentBack === 3) currentBack = 1;
+    else currentBack += 1;
+  }
 
   // Sun
   if ( mouseY <= 100 && (mouseX >= (width/2)-100 && mouseY <= (width/2)+100)) {
@@ -154,6 +181,7 @@ function mousePressed() {
       }
     };
   }
+
 }
 
 /*
@@ -161,41 +189,18 @@ function mousePressed() {
 Plan
 
 - Setting
-  → 4 different flower gardens
-  → Pick up different flowers
-  → Bring out the sun and water the plants based on a timer (and weather-background)
+  → 4 different Skylines
 
-- Variables
-  → What pictures are being tracked
-  → Number of certain flower x4
-  → Time variable (for water)
-  → Time variable (for flower popping up)
 
 - Interactivity
   → Gardener
     ► Move around
-    ► Can be dragged onto flowers or sun/pot
+    ► Can be clicked to change color
 
   → Sun
     ► Can be turned to moon (slows Time variable for water)
 
-  → Water pot
-    ► Just clicked (overclicking kills)
-  
   → Background
     ► Middle button changes flower garden
-
-
-
-
-
-Order of work (high-level):
-
-- Make flowers
-- Make background
-- Do Sun first
-- Do Water
-- Design Protagonist
-- Work with protaonist
 
 */
