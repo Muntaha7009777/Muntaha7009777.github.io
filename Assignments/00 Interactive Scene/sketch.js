@@ -9,6 +9,8 @@ let currentSky = 0;
 let flowersCollected = 0;
 let charX;
 let charY;
+let charSize = 50;
+let moveBy = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -21,6 +23,7 @@ function draw() {
   setSkyBg();
   setSkylineBg();
   setGardenBg();
+  manageChar();
   // setFlowerCounter();
   // flowerPopup();
   // displayFlower();
@@ -33,6 +36,8 @@ function draw() {
 }
 
 
+
+// Backgorund stuff ======================================================================================================
 function setGardenBg() {
   // Sets background of garden according to currentBack
 
@@ -53,7 +58,6 @@ function setGardenBg() {
     rect(0, height, width, -(height) * 2 / 3)
   }
 }
-
 
 function setSkyBg() {
   noStroke();
@@ -94,7 +98,6 @@ function setSkylineBg() {
       triangle(treeX - 6, treeY, treeX + 6, treeY, treeX, treeY - 20);
       fill(0);
       rect(treeX - 1, treeY, 2, 5);
-      console.log(treeX, treeY);
     }
 
   }
@@ -159,30 +162,13 @@ function setSkylineBg() {
     fill(220);
     rect(width / 3.75, height / 3, 50, (-60), 0, 0, 100, 100);
 
-    rect(width-width/3);
+    rect(width - width / 3);
   }
 }
 
 
+// Manages flowers ======================================================================================================
 
-function setFlowerCounter() {
-
-  displayFlower((width - 80), 40);
-  //amount collected
-  fill(0);
-  textSize(20);
-  text(flowersCollected, width - 40, 45);
-}
-
-// function flowerPopup() {
-//   let time = Date.now();
-//   if ((time)%100 === 0){
-//     let flowerX = random(0, width);
-//     let flowerY = random(0, height);
-//     // console.log(flowerX, flowerY);
-//     displayFlower(5, 4);
-//   }
-// }
 
 // function displayFlower(xPos, yPos) {
 //   // display + keeep track --- of the flowers on the top left 
@@ -200,7 +186,44 @@ function setFlowerCounter() {
 //   fill(236, 247, 27);
 //   circle(xPos, yPos, 10);
 // }
+// function flowerPopup() {
+//   let time = Date.now();
+//   if ((time)%100 === 0){
+//     let flowerX = random(0, width);
+//     let flowerY = random(0, height);
+//     // console.log(flowerX, flowerY);
+//     displayFlower(5, 4);
+//   }
+// }
+function setFlowerCounter() {
 
+  displayFlower((width - 80), 40);
+  //amount collected
+  fill(0);
+  textSize(20);
+  text(flowersCollected, width - 40, 45);
+}
+
+
+// Manage Character ======================================================================================================
+function manageChar() {
+  for (let i = 0; i < 4; i++) {
+    stroke(152, 242, 136);
+    fill(50, 100, 255);
+    circle(charX, charY, 40);
+  }
+
+  if (mouseIsPressed && mouseX < charX + charSize && mouseX > charX - charSize && mouseY > charY - charSize && mouseY < charY + charSize) {
+    charX = mouseX; charY = mouseY;
+  }
+
+
+
+}
+
+
+
+// Interactivity ======================================================================================================
 function mousePressed() {
 
   // change currentBack
@@ -229,28 +252,27 @@ function mousePressed() {
 
 }
 
+function keyPressed() {
+  if (keyCode === DOWN_ARROW) charY += moveBy;
+  else if (keyCode === UP_ARROW) charY -= moveBy;
+  else if (keyCode === RIGHT_ARROW) charX += moveBy;
+  else if (keyCode === RIGHT_ARROW) charX -= moveBy;
+}
+
+
+
+
+
+
 /*
 
 Plan
 
-- Setting
-  → 4 different Skylines
-
-
 - Interactivity
   → Gardener
-    ► Move around
-    ► Can be clicked to change color
-
-  → Sun
-    ► Can be turned to moon (slows Time variable for water)
-
-  → Backgrounds
-    ► Design
 
 
 - Currently in progress
   → Design Backgrounds
   → Design Character
-  → Make character movable
 */
