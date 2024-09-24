@@ -12,8 +12,8 @@ let charY;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  charX = width/2;
-  charY = height/2;
+  charX = width / 2;
+  charY = height / 2;
 }
 
 function draw() {
@@ -28,7 +28,7 @@ function draw() {
   noStroke();
   fill(0);
   textSize(12);
-  text('Muntaha Chowdhury', width-120, height-10);
+  text('Muntaha Chowdhury', width - 120, height - 10);
   fill(0); text((mouseX + ', ' + mouseY), mouseX, mouseY);
 }
 
@@ -38,19 +38,19 @@ function setGardenBg() {
 
   if (currentBack === 0) {
     fill(152, 242, 136);
-    rect(0, height, width, -(height)*2/3)
+    rect(0, height, width, -(height) * 2 / 3)
   }
   if (currentBack === 1) {
     fill(182, 147, 255);
-    rect(0, height, width, -(height)*2/3)
+    rect(0, height, width, -(height) * 2 / 3)
   }
   if (currentBack === 2) {
     fill(255, 237, 120);
-    rect(0, height, width, -(height)*2/3)
+    rect(0, height, width, -(height) * 2 / 3)
   }
   if (currentBack === 3) {
     fill(250, 250, 250);
-    rect(0, height, width, -(height)*2/3)
+    rect(0, height, width, -(height) * 2 / 3)
   }
 }
 
@@ -58,42 +58,42 @@ function setGardenBg() {
 function setSkyBg() {
   noStroke();
 
-  if (currentSky === 0)  {   //morning
+  if (currentSky === 0) {   //morning
     fill(199, 247, 255);
-    rect(0, 0, width, height/3);
+    rect(0, 0, width, height / 3);
     fill(255, 203, 0);
-    circle(width/2, 0, 200);
+    circle(width / 2, 0, 200);
   }
-  else  {                   //night
+  else {                   //night
     fill(82, 104, 130);
-    rect(0, 0, width, height/3);
+    rect(0, 0, width, height / 3);
     fill(255);
-    circle(width/2, 0, 200);
+    circle(width / 2, 0, 200);
   }
 }
 
 function setSkylineBg() {
   randomSeed(8);
-  
+
   // Green - mountains
   if (currentBack === 0) {
     fill(72, 90, 56);
-    ellipse((width-width/3), height/3, width, height/2);
+    ellipse((width - width / 3), height / 3, width, height / 2);
 
     fill(72, 130, 56);
-    ellipse(50, height/3, width, height/2.5);
-    
+    ellipse(50, height / 3, width, height / 2.5);
+
     fill(72, 110, 56);
-    ellipse(width-50, height/2.5, width, height/2.5);
+    ellipse(width - 50, height / 2.5, width, height / 2.5);
 
 
     for (let tree = 0; tree < 40; tree++) {
       let treeX = random(0, width);
-      let treeY = random (height/3, height/6.5);
-      fill(255-(tree*2), 184, 245);
-      triangle(treeX-6, treeY, treeX+6, treeY, treeX, treeY-20);
+      let treeY = random(height / 3, height / 6.5);
+      fill(255 - (tree * 2), 184, 245);
+      triangle(treeX - 6, treeY, treeX + 6, treeY, treeX, treeY - 20);
       fill(0);
-      rect(treeX-1, treeY, 2, 5);
+      rect(treeX - 1, treeY, 2, 5);
       console.log(treeX, treeY);
     }
 
@@ -101,16 +101,16 @@ function setSkylineBg() {
 
   // Purple - city
   else if (currentBack === 1) {
-    for (let i = 0; i < width; i+=50) {
+    for (let i = 0; i < width; i += 50) {
       fill(40, 57, 74);
       let buidingHeight = random(40, 130);
-      rect(i, height/3, 50, -buidingHeight);
+      rect(i, height / 3, 50, -buidingHeight);
     }
 
-    for (let i = 0; i < width; i+=50) {
+    for (let i = 0; i < width; i += 50) {
       let buidingHeight = random(20, 100);
       fill(56, 81, 105);
-      rect(i-5, height/3, 50, -buidingHeight);
+      rect(i - 5, height / 3, 50, -buidingHeight);
     }
   }
 
@@ -120,29 +120,29 @@ function setSkylineBg() {
     //pattern:       (bottom right)      (bottom left)               (top)
 
     fill(237, 206, 114);
-    triangle(width/2, height/3,  -40, height/3,         width/6, height/8);     
+    triangle(width / 2, height / 3, -40, height / 3, width / 6, height / 8);
     for (let cactus = 0; cactus < 5; cactus++) {
-      let cactusX = random(width/20, width/2.5);
-      let cactusY = random(height/3.5, height/5);
+      let cactusX = random(width / 20, width / 2.5);
+      let cactusY = random(height / 3.5, height / 5);
       fill(0, 255, 0);
 
       rect(cactusX, cactusY, 5, 25, 4, 4, 0, 0);
-      rect(cactusX-8, cactusY+5, 20, 5, 4);
-      rect(cactusX-8, cactusY-10, 5, 20, 4)
-      rect(cactusX+8, cactusY, 5, 10, 4)
+      rect(cactusX - 8, cactusY + 5, 20, 5, 4);
+      rect(cactusX - 8, cactusY - 10, 5, 20, 4)
+      rect(cactusX + 8, cactusY, 5, 10, 4)
     }
 
     fill(194, 148, 50);
-    triangle(width+20, height/3, (width/2)-20, height/3,  (width-width/6), height/5); 
+    triangle(width + 20, height / 3, (width / 2) - 20, height / 3, (width - width / 6), height / 5);
     for (let cactus = 0; cactus < 5; cactus++) {
-      let cactusX = random(width-width/2, width-width/8);
-      let cactusY = random(height/3, height/5);
+      let cactusX = random(width - width / 2, width - width / 8);
+      let cactusY = random(height / 3, height / 5);
       fill(0, 255, 0);
 
       rect(cactusX, cactusY, 5, 25, 4, 4, 0, 0);
-      rect(cactusX-8, cactusY+5, 20, 5, 4);
-      rect(cactusX-8, cactusY-10, 5, 20, 4)
-      rect(cactusX+8, cactusY, 5, 10, 4)
+      rect(cactusX - 8, cactusY + 5, 20, 5, 4);
+      rect(cactusX - 8, cactusY - 10, 5, 20, 4)
+      rect(cactusX + 8, cactusY, 5, 10, 4)
     }
 
   }
@@ -152,13 +152,14 @@ function setSkylineBg() {
 
     // Igloo
     fill(220);
-    circle(width/4, height/3, width/3);
-    fill(230);
-    rect(width/4, height/3, 70, -height/10, 0, 0, 100, 100);
-    fill(220);
-    rect(width/3.75, height/3, 50, -height/12, 0, 0, 100, 100);
+    circle(width / 4, height / 3, width / 3);
 
-    
+    fill(230);
+    rect(width / 4, height / 3, 70, (-70), 0, 0, 100, 100);
+    fill(220);
+    rect(width / 3.75, height / 3, 50, (-60), 0, 0, 100, 100);
+
+    rect(width-width/3);
   }
 }
 
@@ -166,11 +167,11 @@ function setSkylineBg() {
 
 function setFlowerCounter() {
 
-  displayFlower((width-80), 40);
+  displayFlower((width - 80), 40);
   //amount collected
   fill(0);
   textSize(20);
-  text(flowersCollected, width-40, 45);
+  text(flowersCollected, width - 40, 45);
 }
 
 // function flowerPopup() {
@@ -183,22 +184,22 @@ function setFlowerCounter() {
 //   }
 // }
 
-function displayFlower(xPos, yPos) {
-  // display + keeep track --- of the flowers on the top left 
+// function displayFlower(xPos, yPos) {
+//   // display + keeep track --- of the flowers on the top left 
 
-  stroke(0);
-  fill(150, 147, 255);
+//   stroke(0);
+//   fill(150, 147, 255);
 
-  // Petals (top-left -> goes clockwise)
-  rect(xPos, yPos, -20);      
-  rect(xPos, yPos, 20, -20);
-  rect(xPos, yPos, 20);
-  rect(xPos, yPos, -20, 20);
+//   // Petals (top-left -> goes clockwise)
+//   rect(xPos, yPos, -20);
+//   rect(xPos, yPos, 20, -20);
+//   rect(xPos, yPos, 20);
+//   rect(xPos, yPos, -20, 20);
 
-  // center
-  fill(236, 247, 27);
-  circle(xPos, yPos, 10);
-}
+//   // center
+//   fill(236, 247, 27);
+//   circle(xPos, yPos, 10);
+// }
 
 function mousePressed() {
 
@@ -209,7 +210,7 @@ function mousePressed() {
   }
 
   // Sun
-  if ( mouseY <= 100 && (mouseX >= (width/2)-100 && mouseY <= (width/2)+100)) {
+  if (mouseY <= 100 && (mouseX >= (width / 2) - 100 && mouseY <= (width / 2) + 100)) {
     if (currentSky === 1) currentSky = 0;
     else {
       currentSky = 1;
