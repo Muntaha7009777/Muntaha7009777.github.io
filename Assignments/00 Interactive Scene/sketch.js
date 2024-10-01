@@ -51,7 +51,7 @@ function draw() {
   setGardenBg();
 
   // Main stuff
-  displayFlower();
+  displayFlowers();
   flowersEatenCounter();
   manageChar();
   displayInstructions();
@@ -253,7 +253,7 @@ function drawFlower(xPos, yPos) {
 }
 
 
-function displayFlower() {
+function displayFlowers() {
   // Flowers popup and stay till eaten
 
   // Not eaten flowers
