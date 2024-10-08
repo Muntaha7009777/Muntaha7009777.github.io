@@ -94,4 +94,5 @@ function keyPressed() {
   if (keyCode === RIGHT_ARROW) terWidth += 2;
   if (keyCode === LEFT_ARROW) terWidth -=2;
   if (terWidth < 1) terWidth = 1;
+  if (terWidth > 20) terWidth = 20;
 }
