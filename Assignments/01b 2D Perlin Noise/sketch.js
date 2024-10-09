@@ -5,7 +5,12 @@
 
 
 let advanceBy = 0.01;
-
+let rectNoiseX = 0;
+let rectNoiseY = 0;
+let ellipseNoiseX = 10;
+let ellipseNoiseY = 10;
+let MIN_SIZE = 10;
+let MAX_SIZE = 100;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -16,9 +21,10 @@ function setup() {
 
 function draw() {
   background(220);
-  // drawColorfulCloud();
-  // drawPerlinRectGrid();
-  drawMovingPerlinRects();
+  drawColorfulCloud();
+  drawPerlinRectGrid();
+  drawMovingPerlinRect();
+  drawMovingPerlinEllipse();
 }
 
 function drawColorfulCloud() {
@@ -88,9 +94,66 @@ function drawPerlinRectGrid() {
   }
 }
 
-function drawMovingPerlinRects() {
-  // square moves, fills, sizes according to perlin noise
-  let shapeSize = noise(10, 20);
-  shapeSize = map(shapeSize, -1, 1, 0, 100);
-  rect(10, 10, shapeSize);
+function drawMovingPerlinRect() {
+  // rectangle  moves, fills & sizes according to perlin noise
+  let shapeOneX, shapeOneY;
+
+  // Position
+  if (mouseIsPressed) {
+    shapeOneX = mouseX;
+    shapeOneY = mouseY;
+  } else {
+    shapeOneX = noise(rectNoiseX, rectNoiseX);
+    shapeOneY = noise(rectNoiseY, rectNoiseY);
+    shapeOneX = map(shapeOneX, 0, 1, 0, width);
+    shapeOneY = map(shapeOneY, 0, 1, 0, height);
+  }
+
+
+  // Size
+  let shapeSizeX = map(shapeOneX, 0, width, MIN_SIZE, MAX_SIZE);
+  let shapeSizeY = map(shapeOneY, 0, height, MIN_SIZE, MAX_SIZE);
+
+
+  // Color
+  let shapeColor = map(shapeOneX, 0, width, 0, 225);
+  if (shapeOneX < width/2) fill(225-shapeColor, shapeColor, 0);
+  else fill(0, 225-shapeColor, shapeColor);
+
+
+  rect(shapeOneX, shapeOneY, shapeSizeX, shapeSizeY);
+
+  // Update variables to move along noise graph
+  rectNoiseX +=0.002;
+  rectNoiseY +=0.005;
+}
+
+
+function drawMovingPerlinEllipse() {
+  // ellipse moves, then fills & sizes according to perlin noise
+  let shapeTwoX, shapeTwoY;
+
+  // Position
+    shapeTwoX = noise(ellipseNoiseX, ellipseNoiseX);
+    shapeTwoY = noise(ellipseNoiseY, ellipseNoiseY);
+    shapeTwoX = map(shapeTwoX, 0, 1, width, 0);
+    shapeTwoY = map(shapeTwoY, 0, 1, height, 0);
+
+
+  // Size
+  let shapeSizeX = map(shapeTwoX, 0, width, MIN_SIZE, MAX_SIZE);
+  let shapeSizeY = map(shapeTwoY, 0, height, MIN_SIZE, MAX_SIZE);
+
+
+  // Color
+  let shapeColor = map(shapeTwoX, 0, width, 0, 225);
+  if (shapeTwoX < width/2) fill(225-shapeColor, shapeColor, 0);
+  else fill(0, 225-shapeColor, shapeColor);
+
+
+  ellipse(shapeTwoX, shapeTwoY, shapeSizeX, shapeSizeY);
+
+  // Update variables to move along noise graph
+  ellipseNoiseX +=0.003;
+  ellipseNoiseY +=0.006;
 }
