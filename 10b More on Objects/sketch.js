@@ -6,10 +6,13 @@ let movers = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  for (let i=0; i < 1000; i++) {
+    movers.push(new Mover(random(width), random(height)));
+  }
 }
 
 function draw() {
-  background(220);
+  background(0);
   for (let i = 0; i < movers.length; i++) {
     movers[i].move();
     movers[i].display();  
@@ -22,9 +25,21 @@ function mouseClicked() {
 
 class Mover {
   constructor(x, y) {
-    
-    
-    
-      
+    this.x = x;
+    this.y = y;
+    this.xSpeed = 2;
+    this.ySpeed = 2;      
+  }
+
+  display() {
+    fill(255);
+    ellipse(this.x, this.y, 10,10);
+  }
+
+  move() {
+    this.x+=this.xSpeed;
+    this.y+=this.ySpeed;
+    if(this.x < 0 || this.x > width) this.xSpeed *= -1;
+    if(this.xy < 0 || this.y > height) this.ySpeed *= -1;
   }
 }

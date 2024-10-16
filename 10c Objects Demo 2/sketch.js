@@ -13,6 +13,7 @@ function draw() {
   background(220);
   for(let i = 0; i < points.length; i++) {
     points[i].move();
+    points[i].connectPoints(points);
     points[i].display();
   }
 }
@@ -44,6 +45,21 @@ class MiniPoint {
     ellipse(this.x, this.y, this.s, this.s);
   }
 
+  connectPoints(pointArray) {
+    stroke(this.c);
+    for (let i=0; i < pointArray.length; i++) {
+      // this.x, this.y   pointArrat[i].getX()    pointArray[i].getY()
+      if (this !== pointArray[i]) {
+        if (dist(this.x, this.y, pointArray[i].getX(), pointArray[i].getY()) < 100){
+          line(this.x, this.y, pointArray[i].getX(), pointArray[i].getY());
+        }
+      }
+    }
+  }
+
+  getX() {return this.x;}
+  getY() {return this.y;}
+
   move() {
     let xSpeed = map(noise(this.noiseX), 0, 1, -this.MAX_SPEED, this.MAX_SPEED);
     let ySpeed = map(noise(this.noiseY), 0, 1, -this.MAX_SPEED, this.MAX_SPEED);
@@ -51,5 +67,11 @@ class MiniPoint {
     this.y +=ySpeed;
     this.noiseX += this.offset;
     this.noiseY += this.offset;
+
+    // wrap around code
+    if(this.x < 0) this.x += width;
+    if(this.x > width) this.x -= width;
+    if(this.y < 0) this.y +=height;
+    if(this.y > height) this.y -= height;
   }
 }
