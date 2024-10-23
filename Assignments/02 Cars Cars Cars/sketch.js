@@ -9,11 +9,8 @@ let maxSpeed = 10;
 let minSpeed = 2;
 let initialNumVeh = 10;
 
-let trafficState = 0;       //0-green   /   1-yellow    / 2-red
-let trafficInt = 10; //seconds
-let currentTimer = 0;
-let trafficNotYellow= 1;  //boolean
-let trafficLast;
+let light = 0;
+let counter;
 
 let eastbound = [];
 let westbound = [];
@@ -27,12 +24,14 @@ function setup() {
   for (let i = 0; i < 10; i++) {
     westbound.push(new Vehicle(round(random(0,1)), 1));
   }
+  counter = 0;
 }
 
 function draw() {
   background(220);
-  trafficPolice();
+  trafficLight();
   drawRoad();
+  drawTrafficLight();
   for (let i = 0; i < eastbound.length; i++) {
     eastbound[i].action();
   }
@@ -55,23 +54,67 @@ function drawRoad() {
   }
 }
 
+function drawVehicle(choice, x, y, color, dir) {
+  // draw 0-car 1-truck
 
-function trafficPolice() {
-  currentTimer += 1;
-  if (trafficNotYellow !==0 && currentTimer === trafficInt) {
-    trafficLast = trafficState;
-    trafficState = 1;
-    trafficNotYellow = 0;
-    currentTimer = 0;
+  if (choice === 0) {           //car
+
+    fill(color);
+    rect(x, y, carSize+carSize/2, carSize, 6);
+    fill(0);
+    rect(x+carSize/2, y, carSize-carSize/1.5, carSize-carSize/2.5, 2, 10, 10, 2);      //front window
+    rect(x-carSize/2, y, carSize-carSize/1.5, carSize-carSize/2.5, 10, 2, 2, 10);   //back window
+    arc(x, y-carSize/2.5, carSize, 10, 0, PI);             //left window
+    arc(x, y+carSize/2.5, carSize, 10, PI, 0);             //right window
+
   }
-  else if (currentTimer === trafficInt/2) {
-    trafficNotYellow === 1;
-    if (trafficLast === 0) trafficState === 2;
-    else trafficState === 0;
-    currentTimer = 0;
+
+  
+  else if (choice === 1) {      //truck
+
+    // head
+    fill('green');
+    if (dir === 1) rect(x-truckSize, y, truckSize, truckSize, 4, 0, 0, 4);
+    else rect(x+truckSize, y, truckSize, truckSize, 0, 4, 4, 0);
+
+    // body
+    fill(color);
+    rect(x, y, truckSize+truckSize/2, truckSize+truckSize/10, 2);
+
+    fill(0);
+    if (dir === 0) {
+      rect(x+truckSize*1.25, y, truckSize-truckSize/1.5, truckSize-truckSize/2.5, 2, 10, 10, 2);      //front window
+      arc(x+truckSize*1.05, y-truckSize/2.5, truckSize/2, 10, 0, PI);                                 //left window
+      arc(x+truckSize*1.05, y+truckSize/2.5, truckSize/2, 10, PI, 0);                                 //right window
+    }
+    else {
+      rect(x+truckSize*-1.25, y, truckSize-truckSize/1.5, truckSize-truckSize/2.5, 2, 10, 10, 2);      //front window
+      arc(x+truckSize*-1.05, y-truckSize/2.5, truckSize/2, 10, 0, PI);                                 //left window
+      arc(x+truckSize*-1.05, y+truckSize/2.5, truckSize/2, 10, PI, 0)
+    }
   }
-  // console.log(currentTimer);
 }
+
+function drawTrafficLight() {
+  fill(0);
+  rect(width/2, 0, 50, 300);
+
+
+  if (light === 1) fill('red');
+  else fill(100);
+  circle(width/2, 40, 30);
+
+  if (light === 2) fill('yellow');
+  else fill(100);
+  circle(width/2, 80, 30);
+
+  if (light === 0) fill('green');
+  else fill(100);
+  circle(width/2, 120, 30);
+}
+
+
+
 
 
 
@@ -96,20 +139,28 @@ class Vehicle {
   }
 
   display() {
-    if (this.type === 0) drawVehicle(0, this.x, this.y, this.color);
-    else if (this.type === 1) drawVehicle(1, this.x, this.y, this.color);
+    if (this.type === 0) drawVehicle(0, this.x, this.y, this.color, this.dir);
+    else if (this.type === 1) drawVehicle(1, this.x, this.y, this.color, this.dir);
   }
 
   move() {
+    if (counter > 0) {
+      if (light === 2) {
+        this.speedDown();
+        this.speedDown();
+      }
+      else {
+        this.xSpeed = 0;
+        return;
+    }
+    }    
     this.x += this.xSpeed;
     if (this.x > width) this.x = 0;
     if (this.x < 0) this.x = width;
 
-    if (trafficState === 2) this.xSpeed = 0;
   }
 
   speedUp() {
-    if (trafficState === 2) return;
     if (this.dir === 0) {
       this.xSpeed += 2;
       if (this.xSpeed > maxSpeed) this.xSpeed = maxSpeed;
@@ -126,7 +177,7 @@ class Vehicle {
       if (this.xSpeed < minSpeed) this.xSpeed = minSpeed;
     }
     else if (this.dir === 1) {
-      this.xSpeed -= 2;
+      this.xSpeed += 2;
       if (this.xSpeed > -maxSpeed) this.xSpeed = -minSpeed;
     }
   }
@@ -147,51 +198,24 @@ class Vehicle {
 
 
 
-function drawVehicle(choice, x, y, color) {
-  // draw 0-car 1-truck
 
-  if (choice === 0) {           //car
-
-    fill(color);
-    rect(x, y, carSize+carSize/2, carSize, 6);
-    fill(0);
-    rect(x+carSize/2, y, carSize-carSize/1.5, carSize-carSize/2.5, 2, 10, 10, 2);      //front window
-    rect(x-carSize/2, y, carSize-carSize/1.5, carSize-carSize/2.5, 10, 2, 2, 10);   //back window
-    arc(x, y-carSize/2.5, carSize, 10, 0, PI);             //left window
-    arc(x, y+carSize/2.5, carSize, 10, PI, 0);             //right window
-
-    // left rear view
-    strokeWeight(5);
-    line(x+carSize/3, y-carSize/2, x+5, y-carSize*0.7);
-
-    // right rear view
-    line(x+carSize/3, y+carSize/2, x+5, y+carSize*0.7);
-    strokeWeight(1);
-
+function trafficLight() {
+  if (counter > 0) {
+    if (counter > 120) {
+      light = 2;
+    }
+    else {
+      light = 1;
+    }
+    counter -= 1;
   }
-  else if (choice === 1) {      //truck
-
-    // head
-    fill('green');
-    rect(x+truckSize, y, truckSize, truckSize, 0, 4, 4, 0);
-    // body
-    fill(color);
-    rect(x, y, truckSize+truckSize/2, truckSize+truckSize/10, 2);
-
-    fill(0);
-    rect(x+truckSize*1.25, y, truckSize-truckSize/1.5, truckSize-truckSize/2.5, 2, 10, 10, 2);      //front window
-    arc(x+truckSize*1.05, y-truckSize/2.5, truckSize/2, 10, 0, PI);                                 //left window
-    arc(x+truckSize*1.05, y+truckSize/2.5, truckSize/2, 10, PI, 0);                                 //right window
-
-    // left rear view
-    strokeWeight(5);
-    line(x+truckSize, y-truckSize/2, x+truckSize*0.75, y-truckSize*0.7);
-
-    // right rear view
-    line(x+truckSize, y+truckSize/2, x+truckSize*0.75, y+truckSize*0.7);
-    strokeWeight(1);
-  }
+  else light = 0;
 }
+
+
+
+
+
 
 
 
@@ -201,5 +225,11 @@ function mouseClicked() {
   }
   else if (mouseButton === LEFT) {
     westbound.push(new Vehicle(round(random(0,1)), 1));
+  }
+}
+
+function keyPressed() {
+  if (keyCode === 32) {
+    counter = 160;
   }
 }
