@@ -3,35 +3,49 @@
 // Oct 18, 2024
 // ADD SOMETHING HERE
 
+// for drawing cars
 let carSize = 30;
 let truckSize = 30;
 let maxSpeed = 10;
 let minSpeed = 2;
 let initialNumVeh = 10;
 
-let light = 0;
+// for traffic light
 let counter;
+let light = 0;
+let trafficLight;
 
+// for storing cars
 let eastbound = [];
 let westbound = [];
 
+
+
+
 function setup() {
+  // sets up canvas, initializes some cars, creates traffic light
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
+  counter = 0;
+  trafficLight = new TrafficLight();
+
+  // --cars
   for (let i = 0; i < 10; i++) {
     eastbound.push(new Vehicle(round(random(0,1)), 0));
   }
   for (let i = 0; i < 10; i++) {
     westbound.push(new Vehicle(round(random(0,1)), 1));
   }
-  counter = 0;
+
 }
 
 function draw() {
+  // main function manager
+
   background(220);
-  trafficLight();
+  trafficLight.action();
   drawRoad();
-  drawTrafficLight();
+  
   for (let i = 0; i < eastbound.length; i++) {
     eastbound[i].action();
   }
@@ -39,6 +53,8 @@ function draw() {
     westbound[i].action();
   }
 }
+
+
 
 
 
@@ -90,12 +106,12 @@ function drawVehicle(choice, x, y, color, dir) {
     else {
       rect(x+truckSize*-1.25, y, truckSize-truckSize/1.5, truckSize-truckSize/2.5, 2, 10, 10, 2);      //front window
       arc(x+truckSize*-1.05, y-truckSize/2.5, truckSize/2, 10, 0, PI);                                 //left window
-      arc(x+truckSize*-1.05, y+truckSize/2.5, truckSize/2, 10, PI, 0)
+      arc(x+truckSize*-1.05, y+truckSize/2.5, truckSize/2, 10, PI, 0);
     }
   }
 }
 
-function drawTrafficLight() {
+function drawTrafficLight(light) {
   fill(0);
   rect(width/2, 0, 50, 300);
 
@@ -112,6 +128,7 @@ function drawTrafficLight() {
   else fill(100);
   circle(width/2, 120, 30);
 }
+
 
 
 
@@ -152,8 +169,13 @@ class Vehicle {
       else {
         this.xSpeed = 0;
         return;
+      }
     }
-    }    
+    if (this.xSpeed === 0) {
+      if (this.dir === 0) this.xSpeed = 1;    
+      if (this.dir === 1) this.xSpeed = -1;    
+
+    }
     this.x += this.xSpeed;
     if (this.x > width) this.x = 0;
     if (this.x < 0) this.x = width;
@@ -196,21 +218,37 @@ class Vehicle {
   }
 }
 
+class TrafficLight {
+  constructor() {
+    this.redInterval = 120;
+    this.yellowInterval = 40;
+  }
 
+  display() {
+    drawTrafficLight(light);
+  }
 
-
-function trafficLight() {
-  if (counter > 0) {
-    if (counter > 120) {
-      light = 2;
+  countDown() {
+    if (counter > 0) {
+      if (counter > 120) {
+        light = 2;
+      }
+      else {
+        light = 1;
+      }
+      counter -= 1;
     }
     else {
-      light = 1;
+      light = 0;
     }
-    counter -= 1;
   }
-  else light = 0;
+
+  action() {
+    this.display();
+    this.countDown();
+  }
 }
+
 
 
 
