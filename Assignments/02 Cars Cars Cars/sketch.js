@@ -12,7 +12,7 @@ let initialNumVeh = 10;
 
 // for traffic light
 let counter;
-let light = 0;
+let light = 'green';
 let trafficLight;
 
 // for storing cars
@@ -31,10 +31,10 @@ function setup() {
 
   // --cars
   for (let i = 0; i < 10; i++) {
-    eastbound.push(new Vehicle(round(random(0,1)), 0));
+    eastbound.push(new Vehicle(round(random(0,1)), 'east'));
   }
   for (let i = 0; i < 10; i++) {
-    westbound.push(new Vehicle(round(random(0,1)), 1));
+    westbound.push(new Vehicle(round(random(0,1)), 'west'));
   }
 
 }
@@ -90,15 +90,15 @@ function drawVehicle(choice, x, y, color, dir) {
 
     // head
     fill('green');
-    if (dir === 1) rect(x-truckSize, y, truckSize, truckSize, 4, 0, 0, 4);
-    else rect(x+truckSize, y, truckSize, truckSize, 0, 4, 4, 0);
+    if (dir === 'east') rect(x+truckSize, y, truckSize, truckSize, 0, 4, 4, 0);
+    else rect(x-truckSize, y, truckSize, truckSize, 4, 0, 0, 4);
 
     // body
     fill(color);
     rect(x, y, truckSize+truckSize/2, truckSize+truckSize/10, 2);
 
     fill(0);
-    if (dir === 0) {
+    if (dir === 'east') {
       rect(x+truckSize*1.25, y, truckSize-truckSize/1.5, truckSize-truckSize/2.5, 2, 10, 10, 2);      //front window
       arc(x+truckSize*1.05, y-truckSize/2.5, truckSize/2, 10, 0, PI);                                 //left window
       arc(x+truckSize*1.05, y+truckSize/2.5, truckSize/2, 10, PI, 0);                                 //right window
@@ -113,20 +113,20 @@ function drawVehicle(choice, x, y, color, dir) {
 
 function drawTrafficLight(light) {
   fill(0);
-  rect(width/2, 0, 50, 300);
+  rect(width/2, 0, height/10, height/2.25);
 
 
-  if (light === 1) fill('red');
+  if (light === 'red') fill('red');
   else fill(100);
-  circle(width/2, 40, 30);
+  circle(width/2, height/20, height/20);
 
-  if (light === 2) fill('yellow');
+  if (light === 'yellow') fill('yellow');
   else fill(100);
-  circle(width/2, 80, 30);
+  circle(width/2, height/9, height/20);
 
-  if (light === 0) fill('green');
+  if (light === 'green') fill('green');
   else fill(100);
-  circle(width/2, 120, 30);
+  circle(width/2, height/5.75, height/20);
 }
 
 
@@ -141,18 +141,28 @@ class Vehicle {
   constructor(type, dir) {
     this.type = type;
     this.dir = dir;
-    if (this.dir === 0) {
+    let lane = round(random(0,2));
+
+    if (this.dir === 'east') {
       this.x = 0;
-      this.y = random(height/2 + truckSize, height*3/4 - truckSize);
       this.xSpeed = random(minSpeed, maxSpeed);
       this.color = color(50, 10, 100);
+
+      if (lane === 0) this.y = height/2 + truckSize;
+      else if (lane === 1) this.y = height/2 + height/8;
+      else this.y = height*3/4 - truckSize;
     }
-    else if (this.dir === 1) {
+
+    else if (this.dir === 'west') {
       this.x = width;
-      this.y = random(height/4 + truckSize, height/2 - truckSize) ;
-      this.xSpeed = random(-maxSpeed, minSpeed);
+      this.xSpeed = random(-maxSpeed, -minSpeed);
       this.color = color(50, 200, 100);
+
+      if (lane === 0) this.y = height/4 + truckSize;
+      else if (lane === 1) this.y = height/2 - height/8;
+      else this.y = height/2 - truckSize;
     }
+
   }
 
   display() {
@@ -162,8 +172,7 @@ class Vehicle {
 
   move() {
     if (counter > 0) {
-      if (light === 2) {
-        this.speedDown();
+      if (light === 'yellow') {
         this.speedDown();
       }
       else {
@@ -172,8 +181,8 @@ class Vehicle {
       }
     }
     if (this.xSpeed === 0) {
-      if (this.dir === 0) this.xSpeed = 1;    
-      if (this.dir === 1) this.xSpeed = -1;    
+      if (this.dir === 'east') this.xSpeed = 1;    
+      if (this.dir === 'west') this.xSpeed = -1;    
 
     }
     this.x += this.xSpeed;
@@ -183,22 +192,22 @@ class Vehicle {
   }
 
   speedUp() {
-    if (this.dir === 0) {
+    if (this.dir === 'east') {
       this.xSpeed += 2;
       if (this.xSpeed > maxSpeed) this.xSpeed = maxSpeed;
     }
-    else if (this.dir === 1) {
+    else if (this.dir === 'west') {
       this.xSpeed -= 2;
       if (this.xSpeed < -maxSpeed) this.xSpeed = -maxSpeed;
     }
   }
 
   speedDown() {
-    if (this.dir === 0) {
+    if (this.dir === 'east') {
       this.xSpeed -= 2;
       if (this.xSpeed < minSpeed) this.xSpeed = minSpeed;
     }
-    else if (this.dir === 1) {
+    else if (this.dir === 'west') {
       this.xSpeed += 2;
       if (this.xSpeed > -maxSpeed) this.xSpeed = -minSpeed;
     }
@@ -231,15 +240,15 @@ class TrafficLight {
   countDown() {
     if (counter > 0) {
       if (counter > 120) {
-        light = 2;
+        light = 'yellow';
       }
       else {
-        light = 1;
+        light = 'red';
       }
       counter -= 1;
     }
     else {
-      light = 0;
+      light = 'green';
     }
   }
 
@@ -259,10 +268,10 @@ class TrafficLight {
 
 function mouseClicked() {
   if (mouseButton === LEFT && keyCode === SHIFT) {
-    eastbound.push(new Vehicle(round(random(0,1)), 0));
+    eastbound.push(new Vehicle(round(random(0,1)), 'east'));
   }
   else if (mouseButton === LEFT) {
-    westbound.push(new Vehicle(round(random(0,1)), 1));
+    westbound.push(new Vehicle(round(random(0,1)), 'west'));
   }
 }
 
