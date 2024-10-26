@@ -304,6 +304,7 @@ class TrafficLight {
 
 
   startTimer() {
+    // Starts the timer for how long the traffic light is NOT green
     counter = this.redInterval + this.yellowInterval;
   }
 
