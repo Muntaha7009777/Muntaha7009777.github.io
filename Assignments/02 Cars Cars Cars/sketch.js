@@ -140,19 +140,34 @@ function drawTrafficLight(light) {
 function drawInfo() {
   // display information about speed and instructions
 
+  // count number of a specific type,dir of vehicle
+  let carsEast = 0, carsWest = 0, trucksEast = 0, trucksWest = 0;
+  for (let i = 0; i < eastbound.length; i++) {
+    if (eastbound[i].type === 0) carsEast += 1;
+    else if (eastbound[i].type === 1) trucksEast += 1;
+  }
+  for (let i = 0; i < westbound.length; i++) {
+    if (westbound[i].type === 0) carsWest += 1;
+    else if (westbound[i].type === 1) trucksWest += 1;
+  }
+
   // Just the ? box in the middle
   fill('lightblue');
-  rect(20, 75, 20, 20, 4);
+  rect(20, 15, 20, 20, 4);
+
+  // Instructions
+  fill(0);
+  text('?', 17, 20);
+  text('Left click to add more westbound cars', 10, 40);
+  text('Left click + shift to add more eastbound cars', 10, 60);
+  text('Spacebar to turn traffic light red', 10, 80);
 
   // Text
   fill(0);
-  text(("Max speed: " + MAX_SPEED), 10, 25);
-  text(("Min speed: " + MIN_SPEED), 10, 45);
-
-  text('?', 17, 80);
-  text('Left click to add more westbound cars', 10, 100);
-  text('Left click + shift to add more eastbound cars', 10, 120);
-  text('Spacebar to turn traffic light red', 10, 140);
+  text(("Max speed: " + MAX_SPEED), width-300, 25);
+  text(("Min speed: " + MIN_SPEED), width-300, 45);
+  text(("Going East: " + eastbound.length + "  [Cars: " + carsEast + ",  Trucks: " + trucksEast + "]"), width-300, 65);
+  text(("Going West: " + westbound.length + "  [Cars: " + carsWest + ",  Trucks: " + trucksWest + "]"), width-300, 85);
 }
 
 
@@ -323,7 +338,7 @@ class TrafficLight {
 
 function mouseClicked() {
   // add more cars on mouse click (left: east  // left+shift: west)
-  if (mouseButton === LEFT && keyCode === SHIFT) {
+  if (mouseButton === LEFT && keyIsPressed && keyCode === SHIFT) {
     eastbound.push(new Vehicle(round(random(0, 1)), 'east'));
   }
   else if (mouseButton === LEFT) {
