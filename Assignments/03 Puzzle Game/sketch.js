@@ -1,7 +1,7 @@
 // Puzzle Game
 // Muntaha Chowdhury
 // 29 October, 2024
-// SUMMARIZE STUFF HERE
+// A puzzle game where you have to get the entire board to be the same color. You can switch the flipping area (square and cross) or cheat by folding shift
 
 let flipType = 0;     //0-cross     1-square
 let xDir = 1;
@@ -81,19 +81,19 @@ function flip(col, row){
 
 
 function mousePressed(){
-  // cross-shaped pattern flips on a mouseclick. Boundary conditions are checked within the flip function to ensure in-bounds access for array
+  //  pattern flips on a mouseclick. Boundary conditions are checked within the flip function to ensure in-bounds access for array
 
   if (keyIsPressed && keyCode === SHIFT) {    //Cheater funcitonality
     flip(currentCol, currentRow);
   }
-  else if (flipType === 0) {
+  else if (flipType === 0) {                  //cross
     flip(currentCol, currentRow);
     flip(currentCol-1, currentRow);
     flip(currentCol+1, currentRow);
     flip(currentCol, currentRow-1);
     flip(currentCol, currentRow+1);
-  }
-  else {
+  } 
+  else {                                      //square
     flip(currentCol, currentRow);
     flip(currentCol+xDir, currentRow);
     flip(currentCol, currentRow+yDir);
@@ -102,6 +102,7 @@ function mousePressed(){
 }
 
 function keyPressed() {
+  // change the grid flipping pattern (cross or square)
   if (keyCode === 32) {
     if (flipType === 0) flipType = 1;
     else flipType = 0;
@@ -122,15 +123,16 @@ function determineActiveSquare(){
 }
 
 function win() {
-  // checks if all the gridData is the same
+  // checks if the entire grid is the same
   let toMatch = gridData[0][0];
 
   for (let y = 0; y < NUM_ROWS; y++) {
     for (let x = 0; x < NUM_COLS; x++) {
-      if (gridData[y][x] !== toMatch) return;
+      if (gridData[y][x] !== toMatch) return;     //return if grid is not the same
     }
   }
 
+  // The 'Win' text
   textSize(30);
   textAlign(CENTER);
   fill('green');
@@ -144,6 +146,7 @@ function win() {
 
 
 function checkDir() {
+  // helps to fix the direction of the square grid flipping pattern. So that the square doesn't go out of the screen.
   if (flipType !== 1) return;
 
   if (currentCol === 0) xDir = 1;
@@ -167,14 +170,14 @@ function overlayGuide() {
   if (keyIsPressed && keyCode === SHIFT) {    //Cheater funcitonality 
     drawOverlay(currentCol, currentRow);
   }
-  else if (flipType === 0) {
+  else if (flipType === 0) {                  //cross
     drawOverlay(currentCol, currentRow);
     drawOverlay(currentCol-1, currentRow);
     drawOverlay(currentCol+1, currentRow);
     drawOverlay(currentCol, currentRow-1);
     drawOverlay(currentCol, currentRow+1);
   }
-  else {
+  else {                                      //square
     drawOverlay(currentCol, currentRow);
     drawOverlay(currentCol+xDir, currentRow);
     drawOverlay(currentCol, currentRow+yDir);
