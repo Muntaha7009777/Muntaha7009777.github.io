@@ -63,6 +63,22 @@ function drawGrid(){
 
 
 
+function crossPattern(action) {
+  // does stuff with the cross flipping pattern
+  action(currentCol, currentRow);
+  action(currentCol-1, currentRow);
+  action(currentCol+1, currentRow);
+  action(currentCol, currentRow-1);
+  action(currentCol, currentRow+1);
+}
+
+function squarePattern(action) {
+  // does stuff with the square flipping pattern 
+  action(currentCol, currentRow);
+  action(currentCol+xDir, currentRow);
+  action(currentCol, currentRow+yDir);
+  action(currentCol+xDir, currentRow+yDir);
+}
 
 
 
@@ -87,17 +103,10 @@ function mousePressed(){
     flip(currentCol, currentRow);
   }
   else if (flipType === 0) {                  //cross
-    flip(currentCol, currentRow);
-    flip(currentCol-1, currentRow);
-    flip(currentCol+1, currentRow);
-    flip(currentCol, currentRow-1);
-    flip(currentCol, currentRow+1);
+    crossPattern(flip);
   } 
   else {                                      //square
-    flip(currentCol, currentRow);
-    flip(currentCol+xDir, currentRow);
-    flip(currentCol, currentRow+yDir);
-    flip(currentCol+xDir, currentRow+yDir);
+    squarePattern(flip);
   }
 }
 
@@ -108,7 +117,6 @@ function keyPressed() {
     else flipType = 0;
   }
 }
-
 
 
 
@@ -171,16 +179,9 @@ function overlayGuide() {
     drawOverlay(currentCol, currentRow);
   }
   else if (flipType === 0) {                  //cross
-    drawOverlay(currentCol, currentRow);
-    drawOverlay(currentCol-1, currentRow);
-    drawOverlay(currentCol+1, currentRow);
-    drawOverlay(currentCol, currentRow-1);
-    drawOverlay(currentCol, currentRow+1);
+    crossPattern(drawOverlay);
   }
   else {                                      //square
-    drawOverlay(currentCol, currentRow);
-    drawOverlay(currentCol+xDir, currentRow);
-    drawOverlay(currentCol, currentRow+yDir);
-    drawOverlay(currentCol+xDir, currentRow+yDir);
+    squarePattern(drawOverlay);
   }
 }
