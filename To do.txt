@@ -5,4 +5,3 @@ Finish:
 3) The 10b Crashing Snowballs Demo
 4) Book Shelf Challenge
 5) Waterloo CCC challenges
-6) Practice Quiz
