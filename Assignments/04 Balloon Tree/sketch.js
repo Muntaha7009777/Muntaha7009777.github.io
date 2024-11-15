@@ -9,10 +9,12 @@ let scale = 20;
 let noLeavesDepth = 5;
 let depthStart = 6;
 let seed;
+let pic;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   seed = random(60);
+  pic = loadImage('/assets/images/leaf.png')
 }
 
 function draw() {
@@ -20,6 +22,8 @@ function draw() {
   randomSeed(seed);
   // drawTree(width / 2, height*0.9, 90, 6);
   drawTree(width / 2, height, 90, depthStart);
+
+  testLeaf();
 }
 
 function drawLine(x1, y1, x2, y2, depth) {
@@ -29,13 +33,16 @@ function drawLine(x1, y1, x2, y2, depth) {
   strokeWeight(1);
 }
 
+
+
+
 function drawTree(x1, y1, angle, depth) {
   if (depth > 0) {
     let x2 = x1 + (cos(radians(angle)) * depth * scale); //calculate endpoints of current branch
     let y2 = y1 - (sin(radians(angle)) * depth * scale); //using trig ratios. Get shorter based on depth
     drawLine(x1, y1, x2, y2, depth);
     
-    let controlAngle = map(mouseX, 0, width, 10, 60);
+    let controlAngle = map(mouseX, 0, width, 10, 40);
     //for a 3-branch tree:
     drawTree(x2, y2, angle - controlAngle, depth - 1);
     drawTree(x2, y2, angle               , depth - 1);
@@ -45,17 +52,26 @@ function drawTree(x1, y1, angle, depth) {
   }
 }
 
-
 function drawLeaf(x, y, depth) {
   if (depth < noLeavesDepth ) {
-    fill(random(255), random(255), random(255));
     let size = (random(10, 12));
-    let gradient = drawingContext.createRadialGradient(x, y, size/3, x, y, size);
-    fill(gradient);
+    gradientFill(x, y, size);
     circle(x, y, size*depth);
   }
   // implicit base
 }
+
+function gradientFill(x, y, s) {
+  let gradient = drawingContext.createLinearGradient(x-s, y-s, x+s, y+s);
+  let colorFill = color(random(255), random(255), random(255));
+
+  gradient.addColorStop(0, color(255, 249, 240));
+  gradient.addColorStop(0.5, colorFill);
+  gradient.addColorStop(1, colorFill);
+
+  drawingContext.fillStyle = gradient;
+}
+
 
 
 function keyPressed() {
@@ -65,4 +81,11 @@ function keyPressed() {
   if (keyCode === 88 && noLeavesDepth !== depthStart+1) {
     noLeavesDepth++;
   }
+}
+
+
+function testLeaf() {
+  tint(255, 0, 0);
+  gradientFill(width/4, height/4, 200);
+  image(pic, width/4, height/4);
 }
