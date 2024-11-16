@@ -11,10 +11,13 @@ let depthStart = 6;
 let seed;
 let pic;
 
+function preload() {
+  pic = loadImage('/assets/images/leaf.png')
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   seed = random(60);
-  pic = loadImage('/assets/images/leaf.png')
 }
 
 function draw() {
@@ -55,8 +58,9 @@ function drawTree(x1, y1, angle, depth) {
 function drawLeaf(x, y, depth) {
   if (depth < noLeavesDepth ) {
     let size = (random(10, 12));
-    gradientFill(x, y, size);
-    circle(x, y, size*depth);
+    // gradientFill(x, y, size);z
+    // circle(x, y, size*depth);
+    testLeaf(x, y, size, depth);
   }
   // implicit base
 }
@@ -70,6 +74,7 @@ function gradientFill(x, y, s) {
   gradient.addColorStop(1, colorFill);
 
   drawingContext.fillStyle = gradient;
+  return colorFill;
 }
 
 
@@ -84,8 +89,11 @@ function keyPressed() {
 }
 
 
-function testLeaf() {
-  tint(255, 0, 0);
-  gradientFill(width/4, height/4, 200);
-  image(pic, width/4, height/4);
+function testLeaf(x, y, size, depth) {
+  // tint(255, 0, 0);
+  tint(gradientFill(x, y, size));
+  // gradientFill(width/4, height/4, 200);
+  pic.resize(50,0);
+  imageMode(CENTER);
+  image(pic, x, y);
 }
